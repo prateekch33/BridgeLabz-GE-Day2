@@ -3,9 +3,12 @@ import java.util.*;
 class Employee {
 	public int monthlyWage() {
 		int monthlyWageValue=0;
+		int totalWorkingHours=0;
 		for(int i=0;i<20;i++) {
+			if(totalWorkingHours>100) break;
 			int attendanceValue=attendance();
 			int empWage=partTimeSwitchCase(attendanceValue);
+			totalWorkingHours+=empWage/20;
 			monthlyWageValue+=empWage;
 		}
 		return monthlyWageValue;
