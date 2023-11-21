@@ -1,6 +1,15 @@
 import java.util.*;
 
 class Employee {
+	public int monthlyWage() {
+		int monthlyWageValue=0;
+		for(int i=0;i<20;i++) {
+			int attendanceValue=attendance();
+			int empWage=partTimeSwitchCase(attendanceValue);
+			monthlyWageValue+=empWage;
+		}
+		return monthlyWageValue;
+	}
 	public int partTimeSwitchCase(int attendanceValue) {
 		int empWage=0,empWorkingHours=0;
 		switch(attendanceValue%3) {
@@ -72,5 +81,7 @@ class Employee {
                 else {
                         System.out.printf("Wage of the Employee as absent: %d\n",partTimeWage);
                 }
+		int monthlyWageValue=ob.monthlyWage();
+		System.out.printf("Monthly Wage of the Employee: %d\n",monthlyWageValue);
 	}
 }
