@@ -1,6 +1,17 @@
 import java.util.*;
 
 class Employee {
+	public int partTimeEmployee(int attendanceValue) {
+		int empWage=0,empWorkingHours=0;
+		if(attendanceValue%3==1) {
+			empWorkingHours=8;
+		}
+		else if(attendanceValue%3==2) {
+			empWorkingHours=16;
+		}
+		empWage=empWorkingHours*20;
+		return empWage;
+	}
 	public int wageCalculate(int attendanceValue) {
 		int empWage=0,empWorkingHours=0;
 		if(attendanceValue==1) {
@@ -10,20 +21,31 @@ class Employee {
 		return empWage;
 	}
 	public int attendance() {
-		int checkAttendance=((int)(Math.random()*10))%2;
+		int randomValue=(int)(Math.random()*10);
+		int checkAttendance=randomValue%2;
 		if(checkAttendance==1) {
 			System.out.println("Employee is Present");
 		}
 		else {
 			System.out.println("Employee is Absent");
 		}
-		return checkAttendance;
+		return randomValue;
 	}
 	public static void main(String[] args) {
 		System.out.println("========Welcome to Employee Wage Computation Program========");
 		Employee ob=new Employee();
 		int attendanceValue=ob.attendance();
-		int wage=ob.wageCalculate(attendanceValue);
-		System.out.printf("Wage of the Employee: %d",wage);
+		int wage=ob.wageCalculate(attendanceValue%2);
+		System.out.printf("Wage of the Employee: %d\n",wage);
+		int partTimeWage=ob.partTimeEmployee(attendanceValue);
+		if(attendanceValue%3==1) {
+			System.out.printf("Wage of the Employee as part-time: %d\n",partTimeWage);
+		}
+		else if(attendanceValue%3==2) {
+			System.out.printf("Wage of the Employee as full-time: %d\n",partTimeWage);
+		}
+		else {
+			System.out.printf("Wage of the Employee as absent: %d\n",partTimeWage);
+		}
 	}
 }
