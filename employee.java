@@ -1,8 +1,38 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-class EmployeeDetails {
+interface EmployeeInterface {
+	int monthlyWage();
+
+	int partTimeSwitchCase(int attendanceValue);
+
+	int partTimeEmployee(int attendanceValue);
+
+	int wageCalculate(int attendanceValue);
+
+	int attendance();
+
+	String getCompanyName();
+
+	int getTotalWage();
+
+	int getDailyWage();
+}
+
+class EmployeeDetails implements EmployeeInterface {
 	private int empWagePerHour = 0, fullTimeHour = 0, partTimeHour = 0;
+	private String companyName;
+	private int totalWage = 0;
+	private int dailyWage = 0; // New field to store the daily wage
 	Scanner input = new Scanner(System.in);
+
+	public int getTotalWageByCompany(String companyName) {
+		if (this.companyName.equals(companyName)) {
+			return totalWage;
+		} else {
+			return 0;
+		}
+	}
 
 	public int monthlyWage() {
 		int monthlyWageValue = 0;
@@ -15,6 +45,7 @@ class EmployeeDetails {
 			totalWorkingHours += empWage / 20;
 			monthlyWageValue += empWage;
 		}
+		totalWage += monthlyWageValue;
 		return monthlyWageValue;
 	}
 
@@ -31,6 +62,7 @@ class EmployeeDetails {
 				empWorkingHours = 0;
 		}
 		empWage = empWorkingHours * 20;
+		dailyWage = empWage / 20;
 		return empWage;
 	}
 
@@ -42,6 +74,7 @@ class EmployeeDetails {
 			empWorkingHours = fullTimeHour;
 		}
 		empWage = empWorkingHours * empWagePerHour;
+		dailyWage = empWage;
 		return empWage;
 	}
 
@@ -51,6 +84,7 @@ class EmployeeDetails {
 			empWorkingHours = 8;
 		}
 		empWage = empWorkingHours * 20;
+		dailyWage = empWage / 20;
 		return empWage;
 	}
 
@@ -65,50 +99,54 @@ class EmployeeDetails {
 		return randomValue;
 	}
 
-	public EmployeeDetails() {
-		System.out.println("Enter the Employee Wage Per Hour: ");
-
+	public EmployeeDetails(String companyName) {
+		this.companyName = companyName;
+		System.out.println("Enter the Employee Wage Per Hour for " + companyName + ": ");
 		empWagePerHour = input.nextInt();
-		System.out.println("Enter the Full Time Hour: ");
+		System.out.println("Enter the Full Time Hour for " + companyName + ": ");
 		fullTimeHour = input.nextInt();
-		System.out.println("Enter the Part Time Hour: ");
+		System.out.println("Enter the Part Time Hour for " + companyName + ": ");
 		partTimeHour = input.nextInt();
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public int getTotalWage() {
+		return totalWage;
+	}
+
+	public int getDailyWage() {
+		return dailyWage;
 	}
 }
 
-class Employee {
-
+public class employee {
 	public static void main(String[] args) {
-		System.out.println("========Welcome to Employee Wage Computation Program========");
-		ArrayList<EmployeeDetails> emp = new ArrayList<EmployeeDetails>();
-		System.out.println("Enter the number of employees: ");
+		ArrayList<EmployeeDetails> companyList = new ArrayList<EmployeeDetails>();
 		Scanner input = new Scanner(System.in);
-		int numberOfEmployees = input.nextInt();
-		for (int i = 0; i < numberOfEmployees; i++) {
-			emp.add(new EmployeeDetails());
+		System.out.println("Welcome to Employee Wage Computation Program");
+		System.out.println("Enter the number of Companies: ");
+		int numberOfCompanies = input.nextInt();
+		for (int i = 0; i < numberOfCompanies; i++) {
+			System.out.println("Enter the Company Name: ");
+
+			String companyName = input.next();
+			companyList.add(new EmployeeDetails(companyName));
 		}
-		for (int i = 0; i < numberOfEmployees; i++) {
-			int attendanceValue = emp.get(i).attendance();
-			int wage = emp.get(i).wageCalculate(attendanceValue % 2);
-			System.out.printf("Wage of the Employee: %d\n", wage);
-			int partTimeWage = emp.get(i).partTimeEmployee(attendanceValue);
-			if (attendanceValue % 3 == 1) {
-				System.out.printf("Wage of the Employee as part-time: %d\n", partTimeWage);
-			} else if (attendanceValue % 3 == 2) {
-				System.out.printf("Wage of the Employee as full-time: %d\n", partTimeWage);
-			} else {
-				System.out.printf("Wage of the Employee as absent: %d\n", partTimeWage);
+		for (int i = 0; i < companyList.size(); i++) {
+			System.out.println("Total Wage for " + companyList.get(i).getCompanyName() + " is: "
+					+ companyList.get(i).monthlyWage());
+		}
+		System.out.println("Enter the Company Name to get the Total Wage: ");
+		// Scanner input = new Scanner(System.in);
+		String companyName = input.next();
+		for (int i = 0; i < 10; i++) {
+			int totalWage = companyList.get(i).getTotalWageByCompany(companyName);
+			if (totalWage != 0) {
+				System.out.println("Total Wage for " + companyList.get(i).getCompanyName() + " is: " + totalWage);
 			}
-			// int partTimeSC = emp.get(i).partTimeSwitchCase(attendanceValue);
-			if (attendanceValue % 3 == 1) {
-				System.out.printf("Wage of the Employee as part-time: %d\n", partTimeWage);
-			} else if (attendanceValue % 3 == 2) {
-				System.out.printf("Wage of the Employee as full-time: %d\n", partTimeWage);
-			} else {
-				System.out.printf("Wage of the Employee as absent: %d\n", partTimeWage);
-			}
-			int monthlyWageValue = emp.get(i).monthlyWage();
-			System.out.printf("Monthly Wage of the Employee: %d\n", monthlyWageValue);
 		}
 		input.close();
 	}
